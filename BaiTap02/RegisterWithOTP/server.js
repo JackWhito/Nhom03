@@ -20,13 +20,23 @@ db.connect(err => {
 
 app.post('/register', (req, res) => {
     const { email, password } = req.body;
-    const otp = crypto.randomBytes(3).toString('hex');
-    const otpExpiry = new Date(Date.now() + 10 * 60000); // 10 minutes from now
 
-    const query = 'INSERT INTO users (email, password, otp, otp_expiry) VALUES (?, ?, ?, ?)';
-    db.query(query, [email, password, otp, otpExpiry], (err, result) => {
+    // Check for duplicate email
+    const checkQuery = 'SELECT * FROM users WHERE email = ?';
+    db.query(checkQuery, [email], (err, results) => {
         if (err) throw err;
-        res.json({ message: 'OTP generated', otp });
+        if (results.length > 0) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+
+        const otp = crypto.randomBytes(3).toString('hex');
+        const otpExpiry = new Date(Date.now() + 10 * 60000); // 10 minutes from now
+
+        const query = 'INSERT INTO users (email, password, otp, otp_expiry) VALUES (?, ?, ?, ?)';
+        db.query(query, [email, password, otp, otpExpiry], (err, result) => {
+            if (err) throw err;
+            res.json({ message: 'OTP generated', otp });
+        });
     });
 });
 
@@ -36,7 +46,7 @@ app.post('/verify-otp', (req, res) => {
     db.query(query, [email, otp], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
-            res.send('OTP verified successfully');
+            res.send('Register Successfully!');
         } else {
             res.send('Invalid or expired OTP');
         }
