@@ -1,0 +1,10 @@
+.modal-text {
+    color: black;
+}
+
+input::placeholder {
+    color: #999; /* or any other color you prefer for the placeholder */
+}
+.labelmodal-text {
+    color: black;
+}
