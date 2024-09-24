@@ -3,6 +3,7 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
+import Home from "./components/Home";
 import ForgotPassword from './components/ForgotPassword';
  
 function App() {
@@ -10,7 +11,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Login/>
+          <Home/>
         </Route>
         <Route path="/register">
           <Register/>

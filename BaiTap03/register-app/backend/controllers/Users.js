@@ -2,6 +2,88 @@ import Users from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Generate a random OTP
+const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+};
+
+// Configure nodemailer
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587, // Use 465 for SSL
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await Users.findOne({ where: { email: email } });
+        if (!user) return res.status(404).json({ msg: "Email not found" });
+
+        const otp = generateOTP();
+        const otpExpires = Date.now() + 3600000; // 1 hour
+
+        // Save the OTP and its expiration time to the user's record
+        await Users.update({ otp: otp, otp_expires: otpExpires }, { where: { email: email } });
+
+        // Send the OTP via email
+        const mailOptions = {
+            to: email,
+            from: process.env.EMAIL,
+            subject: 'Password Reset OTP',
+            text: `Your OTP for password reset is: ${otp}. It is valid for 1 hour.`
+        };
+
+        transporter.sendMail(mailOptions, (error, response) => {
+            if (error) {
+                console.error('There was an error: ', error);
+                return res.status(500).json({ msg: "Error sending email" });
+            }
+            res.json({ msg: 'OTP sent to email' });
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Internal Server Error" });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    const { email, otp, newPassword, confPassword } = req.body;
+    if (newPassword !== confPassword) return res.status(400).json({ msg: "Password and Confirm Password do not match" });
+
+    try {
+        const user = await Users.findOne({
+            where: {
+                email: email,
+                otp: otp,
+                otp_expires: { [Op.gt]: Date.now() }
+            }
+        });
+
+        if (!user) return res.status(400).json({ msg: "Invalid or expired OTP" });
+
+        const salt = await bcrypt.genSalt();
+        const hashPassword = await bcrypt.hash(newPassword, salt);
+
+        await Users.update({ password: hashPassword, otp: null, otp_expires: null }, { where: { id: user.id } });
+
+        res.json({ msg: "Password has been reset" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Internal Server Error" });
+    }
+};
+
 
 export const checkUser = async (req, res) => {
     const { email, name } = req.body;
@@ -26,7 +108,7 @@ export const getUsers = async(req, res) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
  
 export const Register = async (req, res) => {
     const { name, email, password, confPassword } = req.body;
@@ -40,17 +122,62 @@ export const Register = async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashPassword = await bcrypt.hash(password, salt);
 
+        const otp = generateOTP();
+        const otpExpires = Date.now() + 3600000; // 1 hour
+
+        // Save the user with OTP and expiration time
         await Users.create({
             name: name,
             email: email,
-            password: hashPassword
+            password: hashPassword,
+            otp: otp,
+            otp_expires: otpExpires,
+            isVerified: false // Add a field to track verification status
         });
-        res.json({ msg: "Registration Successful" });
+
+        // Send the OTP via email
+        const mailOptions = {
+            to: email,
+            from: process.env.EMAIL,
+            subject: 'Account Verification OTP',
+            text: `Your OTP for account verification is: ${otp}. It is valid for 1 hour.`
+        };
+
+        transporter.sendMail(mailOptions, (error, response) => {
+            if (error) {
+                console.error('There was an error: ', error);
+                return res.status(500).json({ msg: "Error sending email" });
+            }
+            res.json({ msg: 'OTP sent to email. Please verify your account.' });
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "Internal Server Error" });
     }
-}
+};
+
+export const verifyOtp = async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const user = await Users.findOne({
+            where: {
+                email: email,
+                otp: otp,
+                otp_expires: { [Op.gt]: Date.now() }
+            }
+        });
+
+        if (!user) return res.status(400).json({ msg: "Invalid or expired OTP" });
+
+        await Users.update({ otp: null, otp_expires: null, isVerified: true }, { where: { id: user.id } });
+
+        res.json({ msg: "Account verified successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Internal Server Error" });
+    }
+};
 
  
 export const Login = async(req, res) => {
@@ -84,7 +211,7 @@ export const Login = async(req, res) => {
     } catch (error) {
         res.status(404).json({msg:"Email not found"});
     }
-}
+};
  
 export const Logout = async(req, res) => {
     const refreshToken = req.cookies.refreshToken;
@@ -103,4 +230,4 @@ export const Logout = async(req, res) => {
     });
     res.clearCookie('refreshToken');
     return res.sendStatus(200);
-}
+};

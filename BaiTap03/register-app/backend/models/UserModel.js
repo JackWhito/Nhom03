@@ -15,6 +15,14 @@ const Users = db.define('users',{
     },
     refresh_token:{
         type: DataTypes.TEXT
+    },
+    otp: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    otp_expires: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 },{
     freezeTableName:true

@@ -15,40 +15,42 @@ const Register = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const history = useHistory();
 
-    const generateOtp = () => {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        setGeneratedOtp(otp);
-        return otp;
-    }
 
     const Register = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/users', {
+            const response = await axios.post('http://localhost:5000/users', {
                 name: name,
                 email: email,
                 password: password,
                 confPassword: confPassword
             });
-            const otp = generateOtp();
+            setMsg(response.data.msg);
             setIsModalOpen(true);
-            console.log(`Generated OTP: ${otp}`); // For debugging purposes
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);
+            } else {
+                setMsg("An error occurred. Please try again.");
             }
         }
-    }
+    };
 
-    const verifyOtp = (e) => {
+    const verifyOtp = async (e) => {
         e.preventDefault();
-        if (otp === generatedOtp) {
+        try {
+            const response = await axios.post('http://localhost:5000/verifyOtp', { email, otp });
+            setMsg(response.data.msg);
             setIsModalOpen(false);
-            history.push("/");
-        } else {
-            setMsg("Invalid OTP. Please try again.");
+            history.push('/login'); // Navigate to the login page
+        } catch (error) {
+            if (error.response) {
+                setMsg(error.response.data.msg);
+            } else {
+                setMsg("An error occurred. Please try again.");
+            }
         }
-    }
+    };
 
     return (
         <section className="hero has-background-grey-light is-fullheight is-fullwidth">
@@ -96,10 +98,10 @@ const Register = () => {
             </div>
             <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
                 <h2 className="modal-text">Enter OTP</h2>
-                <p className="modal-text">Your OTP is: {generatedOtp}</p>
                 <form onSubmit={verifyOtp}>
+                    <p className="has-text-centered has-text-danger">{msg}</p>
                     <div className="field mt-5">
-                        <label className="labelmodal-text">OTP</label>
+                        <label className="label modal-text">OTP</label>
                         <div className="controls">
                             <input type="text" className="input" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
                         </div>
