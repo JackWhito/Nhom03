@@ -31,7 +31,7 @@ export const forgotPassword = async (req, res) => {
         if (!user) return res.status(404).json({ msg: "Email not found" });
 
         const otp = generateOTP();
-        const otpExpires = Date.now() + 3600000; // 1 hour
+        const otpExpires = Date.now()  + 5 * 60 * 1000; // 5 min
 
         // Save the OTP and its expiration time to the user's record
         await Users.update({ otp: otp, otp_expires: otpExpires }, { where: { email: email } });
@@ -41,7 +41,7 @@ export const forgotPassword = async (req, res) => {
             to: email,
             from: process.env.EMAIL,
             subject: 'Password Reset OTP',
-            text: `Your OTP for password reset is: ${otp}. It is valid for 1 hour.`
+            text: `Your OTP for password reset is: ${otp}. It is valid for 5 min.`
         };
 
         transporter.sendMail(mailOptions, (error, response) => {
@@ -123,7 +123,7 @@ export const Register = async (req, res) => {
         const hashPassword = await bcrypt.hash(password, salt);
 
         const otp = generateOTP();
-        const otpExpires = Date.now() + 3600000; // 1 hour
+        const otpExpires = Date.now() + 5 * 60 * 1000;; // 5 min
 
         // Save the user with OTP and expiration time
         await Users.create({
@@ -140,7 +140,7 @@ export const Register = async (req, res) => {
             to: email,
             from: process.env.EMAIL,
             subject: 'Account Verification OTP',
-            text: `Your OTP for account verification is: ${otp}. It is valid for 1 hour.`
+            text: `Your OTP for account verification is: ${otp}. It is valid for 5 min.`
         };
 
         transporter.sendMail(mailOptions, (error, response) => {
