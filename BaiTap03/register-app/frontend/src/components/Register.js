@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
 import Modal from 'react-modal';
-import './Register.css'; // Import the CSS file
+import './Register.css';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -11,7 +11,6 @@ const Register = () => {
     const [confPassword, setConfPassword] = useState('');
     const [msg, setMsg] = useState('');
     const [otp, setOtp] = useState('');
-    const [generatedOtp, setGeneratedOtp] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const history = useHistory();
 
@@ -64,25 +63,25 @@ const Register = () => {
                                     <label className="label">Name</label>
                                     <div className="controls">
                                         <input type="text" className="input" placeholder="Name"
-                                            value={name} onChange={(e) => setName(e.target.value)} />
+                                            value={name} onChange={(e) => setName(e.target.value)} required />
                                     </div>
                                 </div>
                                 <div className="field mt-5">
                                     <label className="label">Email</label>
                                     <div className="controls">
-                                        <input type="text" className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                        <input type="text" className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                                     </div>
                                 </div>
                                 <div className="field mt-5">
                                     <label className="label">Password</label>
                                     <div className="controls">
-                                        <input type="password" className="input" placeholder="******" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                        <input type="password" className="input" placeholder="******" value={password} onChange={(e) => setPassword(e.target.value)} required />
                                     </div>
                                 </div>
                                 <div className="field mt-5">
                                     <label className="label">Confirm Password</label>
                                     <div className="controls">
-                                        <input type="password" className="input" placeholder="******" value={confPassword} onChange={(e) => setConfPassword(e.target.value)} />
+                                        <input type="password" className="input" placeholder="******" value={confPassword} onChange={(e) => setConfPassword(e.target.value)} required />
                                     </div>
                                 </div>
                                 <div className="field mt-5">
@@ -103,7 +102,7 @@ const Register = () => {
                     <div className="field mt-5">
                         <label className="label modal-text">OTP</label>
                         <div className="controls">
-                            <input type="text" className="input" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+                            <input type="text" className="input" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} required />
                         </div>
                     </div>
                     <div className="field mt-5">
@@ -112,7 +111,7 @@ const Register = () => {
                 </form>
             </Modal>
         </section>
-    )
-}
+    );
+}    
 
 export default Register;

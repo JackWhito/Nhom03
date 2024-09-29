@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
@@ -16,9 +16,9 @@ function App() {
         <Route path="/register">
           <Register/>
         </Route>
-        <Route path="/dashboard">
+        <Route path="/profile">
           <Navbar/>
-          <Dashboard/>
+          <Profile/>
         </Route>
         <Route path="/login">
           <Login/>
