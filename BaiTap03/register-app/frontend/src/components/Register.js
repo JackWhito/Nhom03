@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
 import Modal from 'react-modal';
-import './Register.css';
+import './css/Register.css';
 
 const Register = () => {
     const [name, setName] = useState('');
