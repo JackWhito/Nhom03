@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyOtp, forgotPassword, resetPassword, checkUser, getUsers, Register, Login, Logout } from "../controllers/Users.js";
-import { searchItems, filterItems, getItems } from "../controllers/Items.js";
+import { searchItems, filterItems, getTopSeller, getTopView } from "../controllers/Items.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 
@@ -19,6 +19,6 @@ router.post('/verifyOtp', verifyOtp);
 // Items related
 router.get('/items/search',searchItems);
 router.get('/items/filter', filterItems);
-router.get('/items/get', getItems);
-
+router.get('/items/topsell', getTopSeller);
+router.get('/items/topview', getTopView);
 export default router;

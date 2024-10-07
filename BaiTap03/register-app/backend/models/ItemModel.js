@@ -19,6 +19,16 @@ const Item = db.define('items', {
     stock: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    sold:{
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false
+    },
+    viewed:{
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false
     }
 }, {
     freezeTableName: true

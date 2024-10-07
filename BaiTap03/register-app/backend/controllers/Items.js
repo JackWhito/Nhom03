@@ -37,10 +37,30 @@ export const filterItems = async (req, res) => {
     }
 };
 
-export const getItems = async (req, res) => {
+export const getTopSeller = async (req, res) => {
     try {
-        const items = await Item.findAll();
-        res.json(items);
+        const topItems = await Item.findAll({
+            order: [
+                ['sold','DESC']
+            ],
+            limit: 10
+        });
+        res.json(topItems);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getTopView = async (req, res) => {
+    try {
+        const topItems = await Item.findAll({
+            order: [
+                ['viewed','DESC']
+            ],
+            limit: 10
+        });
+        res.json(topItems);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
