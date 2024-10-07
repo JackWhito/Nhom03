@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 import nodemailer from "nodemailer";
-import crypto from "crypto";
 import dotenv from "dotenv";
 dotenv.config();
 

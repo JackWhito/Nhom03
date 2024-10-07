@@ -36,3 +36,13 @@ export const filterItems = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getItems = async (req, res) => {
+    try {
+        const items = await Item.findAll();
+        res.json(items);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};

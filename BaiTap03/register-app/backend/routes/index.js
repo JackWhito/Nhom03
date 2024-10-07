@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyOtp, forgotPassword, resetPassword, checkUser, getUsers, Register, Login, Logout } from "../controllers/Users.js";
-import { searchItems, filterItems } from "../controllers/Items.js";
+import { searchItems, filterItems, getItems } from "../controllers/Items.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 
@@ -16,8 +16,9 @@ router.post('/checkUser', checkUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 router.post('/verifyOtp', verifyOtp);
-
 // Items related
-router.get('/items/search',searchItems)
+router.get('/items/search',searchItems);
 router.get('/items/filter', filterItems);
+router.get('/items/get', getItems);
+
 export default router;

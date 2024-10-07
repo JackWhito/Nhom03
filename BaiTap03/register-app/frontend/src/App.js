@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
-import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import Home from "./components/HomeMain";
 import ForgotPassword from './components/ForgotPassword';
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Contact from "./components/Contact";
+import Logout from "./components/Logout";
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +19,6 @@ function App() {
           <Register/>
         </Route>
         <Route path="/profile">
-          <Navbar/>
           <Profile/>
         </Route>
         <Route path="/login">
@@ -39,6 +38,9 @@ function App() {
         </Route>
         <Route path="/home">
           <Home/>
+        </Route>
+        <Route path="/logout">
+          <Logout/>
         </Route>
       </Switch>
     </BrowserRouter>
