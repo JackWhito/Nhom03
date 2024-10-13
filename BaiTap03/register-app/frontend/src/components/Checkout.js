@@ -1001,24 +1001,23 @@ const Checkout = () => {
             </div>
             </div>
         </footer>
-        {/* /End Footer Area */}
-        {/* Jquery */}
-        {/* Popper JS */}
-        {/* Bootstrap JS */}
-        {/* Color JS */}
-        {/* Slicknav JS */}
-        {/* Owl Carousel JS */}
-        {/* Magnific Popup JS */}
-        {/* Fancybox JS */}
-        {/* Waypoints JS */}
-        {/* Countdown JS */}
-        {/* Nice Select JS */}
-        {/* Ytplayer JS */}
-        {/* Flex Slider JS */}
-        {/* ScrollUp JS */}
-        {/* Onepage Nav JS */}
-        {/* Easing JS */}
-        {/* Active JS */}
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-migrate-3.0.0.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/colors.js"></script>
+        <script src="js/slicknav.min.js"></script>
+        <script src="js/owl-carousel.js"></script>
+        <script src="js/magnific-popup.js"></script>
+        <script src="js/waypoints.min.js"></script>
+        <script src="js/finalcountdown.min.js"></script>
+        <script src="js/nicesellect.js"></script>
+        <script src="js/flex-slider.js"></script>
+        <script src="js/scrollup.js"></script>
+        <script src="js/onepage-nav.min.js"></script>
+        <script src="js/easing.js"></script>
+        <script src="js/active.js"></script>
         </>
     )
 }
