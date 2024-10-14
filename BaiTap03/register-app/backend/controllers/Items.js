@@ -1,4 +1,4 @@
-import Item from "../models/ItemModel.js";
+import Product from "../models/ItemModel.js";
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
@@ -10,7 +10,7 @@ export const searchItems = async (req, res) => {
 
         if (name) where.name = { [Sequelize.Op.like]: `%${name}%` };
 
-        const items = await Item.findAll({ where });
+        const items = await Product.findAll({ where });
         res.json(items);
     } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ export const filterItems = async (req, res) => {
         if (minStock) where.stock = { [Sequelize.Op.gte]: parseInt(minStock) };
         if (maxStock) where.stock = { [Sequelize.Op.lte]: parseInt(maxStock) };
 
-        const items = await Item.findAll({ where });
+        const items = await Product.findAll({ where });
         res.json(items);
     } catch (error) {
         console.log(error);
@@ -39,7 +39,7 @@ export const filterItems = async (req, res) => {
 
 export const getTopSeller = async (req, res) => {
     try {
-        const topItems = await Item.findAll({
+        const topItems = await Product.findAll({
             order: [
                 ['sold','DESC']
             ],
@@ -54,7 +54,7 @@ export const getTopSeller = async (req, res) => {
 
 export const getTopView = async (req, res) => {
     try {
-        const topItems = await Item.findAll({
+        const topItems = await Product.findAll({
             order: [
                 ['viewed','DESC']
             ],

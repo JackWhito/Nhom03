@@ -3,7 +3,12 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Item = db.define('items', {
+const Product = db.define('products', {
+    id:{
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,    
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -15,6 +20,9 @@ const Item = db.define('items', {
     price: {
         type: DataTypes.FLOAT,
         allowNull: false
+    },
+    description:{
+        type: DataTypes.STRING
     },
     stock: {
         type: DataTypes.INTEGER,
@@ -38,4 +46,4 @@ const Item = db.define('items', {
     await db.sync();
 })();
 
-export default Item;
+export default Product;
