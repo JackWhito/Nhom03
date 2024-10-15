@@ -4,6 +4,7 @@ import { searchItems, filterItems, getTopSeller, getTopView } from "../controlle
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import { addToCart, removeFromCart, subtractQuantity, viewCart, removeAllFromCart } from '../controllers/Cart.js';
+import { createOrder, getOrderDetails, updateOrderStatus, updatePayment } from "../controllers/Order.js";
 
 const router = express.Router();
  
@@ -28,5 +29,9 @@ router.post('/cart/remove', removeFromCart);
 router.get('/cart', viewCart);
 router.post('/cart/subtract', subtractQuantity);
 router.post('/cart/empty', removeAllFromCart);
-
+// Order related
+router.post('/create-order',createOrder);
+router.put('/update-order/:orderId',updateOrderStatus);
+router.get('/order/:orderId', getOrderDetails);
+router.put('/update-payment/:orderId',updatePayment);
 export default router;
