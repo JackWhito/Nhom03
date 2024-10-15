@@ -3,7 +3,7 @@ import { verifyOtp, forgotPassword, resetPassword, checkUser, getUsers, Register
 import { searchItems, filterItems, getTopSeller, getTopView } from "../controllers/Items.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
-import { addToCart, removeFromCart, viewCart } from '../controllers/Cart.js';
+import { addToCart, removeFromCart, subtractQuantity, viewCart, removeAllFromCart } from '../controllers/Cart.js';
 
 const router = express.Router();
  
@@ -25,5 +25,8 @@ router.get('/items/topview', getTopView);
 // Cart related
 router.post('/cart/add', addToCart);
 router.post('/cart/remove', removeFromCart);
-router.get('/cart/view', viewCart);
+router.get('/cart', viewCart);
+router.post('/cart/subtract', subtractQuantity);
+router.post('/cart/empty', removeAllFromCart);
+
 export default router;
