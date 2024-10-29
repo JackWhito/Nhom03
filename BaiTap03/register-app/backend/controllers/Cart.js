@@ -1,7 +1,6 @@
 import Cart from "../models/CartModel.js";
 import CartItem from "../models/CartItemModel.js";
 import Product from "../models/ItemModel.js";
-import Users from "../models/UserModel.js";
 
 export const addToCart = async (req, res) => {
   try {

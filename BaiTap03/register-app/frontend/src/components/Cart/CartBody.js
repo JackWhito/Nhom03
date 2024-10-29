@@ -45,7 +45,6 @@ const CartBody = () => {
                             <button
                                 type="button"
                                 className="btn btn-primary btn-number"
-                                disabled="disabled"
                                 data-type="minus"
                                 data-field="quant[1]"
                             >

@@ -178,7 +178,7 @@ const NavBar = () => {
             </div>
             </div>
             {/* Header Inner */}
-            <div className="header-inner">
+            <div className="Nav-header-inner">
             <div className="container">
                 <div className="cat-nav-head">
                 <div className="row">
@@ -213,22 +213,7 @@ const NavBar = () => {
                                     </li>
                                 </ul>
                                 </li>
-                                <li>
-                                <a href="#">Pages</a>
-                                </li>
-                                <li>
-                                <a href="#">
-                                    Blog
-                                    <i className="ti-angle-down" />
-                                </a>
-                                <ul className="dropdown">
-                                    <li>
-                                    <a href="blog-single-sidebar.html">
-                                        Blog Single Sidebar
-                                    </a>
-                                    </li>
-                                </ul>
-                                </li>
+
                                 <li>
                                 <a href="contact.html">Contact Us</a>
                                 </li>

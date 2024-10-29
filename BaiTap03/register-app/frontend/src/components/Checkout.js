@@ -11,7 +11,7 @@ import '../htmltemplate/css/flex-slider.min.css';
 import '../htmltemplate/css/owl-carousel.css';
 import '../htmltemplate/css/slicknav.min.css';
 import '../htmltemplate/css/reset.css';
-import '../htmltemplate/style.css';
+import './css/style.css';
 import '../htmltemplate/css/responsive.css';
 
 

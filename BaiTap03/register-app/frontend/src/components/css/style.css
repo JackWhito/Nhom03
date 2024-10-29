@@ -745,7 +745,11 @@ Version:1.0
 	border:none;
 }
 .header.shop .header-inner {
-	background: #333;
+	background-color: black;
+	height: 72px;
+}
+.Nav-header-inner{
+	background-color: black;
 }
 .header.shop.v3 .header-inner {
 	background: transparent;
@@ -762,9 +766,11 @@ Version:1.0
 	background: transparent;
 	position: relative;
 	background: #f7941d;
+	height: 72px;
 }
 .header.shop .all-category h3{
 	padding: 20px 25px;
+	height: 72px;
 }
 .header.shop .cat-heading {
 	font-size: 20px;
@@ -777,9 +783,8 @@ Version:1.0
 	font-size: 22px;
 }
 .header.shop .main-category {
-	position: absolute;
+	position:relative;
 	left: 0;
-	top: 64px;
 	background: #fff;
 	z-index: 1;
 	width: 100%;
@@ -966,13 +971,16 @@ Version:1.0
 .header.shop .nav li.active a{
 	color:#fff;
 	background:#F7941D;
+	border-bottom: none;
 }
 .header.shop.v2 .nav li.active a{
 	color:#333 !important;
 	background:transparent !important;
+	border-bottom: none;
 }
 .header.shop.v2 .nav li.active a{
 	color:#F7941D !important;
+	border-bottom: none;
 }
 .header.shop .nav .dropdown li{
 	margin:0;
@@ -1141,10 +1149,9 @@ Version:1.0
 	width:100%;
 	z-index:999;
 }
-.header.sticky .all-category{}
 .header.sticky .all-category h3{
 	cursor:pointer;
-	
+	height: 72px;
 }
 .header.sticky .all-category .main-category{
 	opacity:0;
@@ -1252,6 +1259,8 @@ Version:1.0
 }
 .hero-slider .hero-text .button{
 	margin:0;
+	border: none;
+	padding: 0;
 }
 .hero-slider .hero-text .btn {
 	color: #fff;
@@ -2128,9 +2137,6 @@ Version:1.0
 .shop-sidebar .categor-list {
 	margin-top: 10px;
 }
-.shop-sidebar .categor-list li{
-	
-}
 .shop-sidebar .categor-list li {
 	margin-bottom: 10px;
 }
@@ -2220,11 +2226,10 @@ Version:1.0
 }
 .shop .single-shorter label {
 	display: inline-block;
-	float: left;
 	margin: 4px 5px 0 0;
 	font-weight:500;
 }
-.shop .single-shorter option{}
+
 .shop .nice-select {
 	clear: initial;
 	display: inline-block;
@@ -2337,7 +2342,7 @@ Version:1.0
 	padding-bottom: 20px;
 	border-bottom: 1px solid #eee;
 }
-.shop.single .product-des {}
+
 .shop.single .product-des .total-review{
 	font-size:14px;
 	font-weight:500;
@@ -2377,7 +2382,7 @@ Version:1.0
 .shop.single .product-des .product-buy {
 	margin-top: 40px;
 }
-.shop.single .product-des .product-buy{}
+
 .shop.single .product-des .color {
 	display: inline-block;
 	margin-right: 50px;
@@ -2520,6 +2525,7 @@ Version:1.0
 	border-radius: 0px;
 	overflow: hidden;
 	padding: 0px 38px;
+	border-color: black;
 }
 .shop.single .add-to-cart {
 	display:inline-block;
@@ -2982,16 +2988,20 @@ Version:1.0
 }
 .shopping-cart .table .remove-icon{
 	font-size:16px;
+	color: black;
 }
 .shopping-cart .table td {
 	vertical-align: middle;
 	border-top: 1px solid #eee;
 	padding: 30px;
+	border: none;
 }
 .shopping-summery tbody .price {
 	text-align: center;
 }
-.shopping-summery tbody .price span{}
+.shopping-summery tbody .price span{
+	color: black;
+}
 .shopping-cart tbody .qty .input-group {
 	width: 175px;
 	display: inline-block;
@@ -3005,11 +3015,17 @@ Version:1.0
 	left:0;
 	border-radius:0;
 	overflow:hidden;
+	background-color: white;
+	padding: 0;
+	height: 46px;
 }
 .shopping-cart .qty .button.plus {
 	right: 0;
 	border-radius:0;
 	overflow:hidden;
+	background-color: white;
+	padding: 0;
+	height: 46px;
 }
 .shopping-cart .qty .button .btn {
 	padding: 0;
@@ -3037,7 +3053,9 @@ Version:1.0
 .shopping-summery tbody .total-amount {
 	text-align: center;
 }
-.shopping-summery tbody .total-amount span{}
+.shopping-summery tbody .total-amount span{
+	color: black;
+}
 .shopping-summery tbody .action {
 	text-align: center;
 }
@@ -3638,7 +3656,6 @@ Version:1.0
 .pagination .pagination-list li a i{
 	font-size:13px;
 }
-.pagination .pagination-list li a i{}
 .blog-grids.pagination{
 	margin-top:50px;
 	text-align:center;
@@ -4546,7 +4563,6 @@ Version:1.0
 	margin-bottom: 20px;
 	line-height: 22px;
 }
-.blog-single .single-comment .content .button{}
 .blog-single .single-comment .content .btn {
 	display: inline-block;
 	color: #666;

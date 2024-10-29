@@ -265,7 +265,7 @@ const Header = () => {
                         <div className="navbar-collapse">
                             <div className="nav-inner">
                             <ul className="nav main-menu menu navbar-nav">
-                                <li className="active">
+                                <li className="Pagactive">
                                 <a href="#">Home</a>
                                 </li>
                                 <li>

@@ -177,8 +177,9 @@ img {
   left: 0;
 }
 /*Active link*/
-.active {
+.Pagactive {
   position: relative;
+  border-bottom: none;
 }
 
 .active::before {
@@ -250,7 +251,7 @@ img {
 /*BUTTONS*/
 .button {
   display: inline-block;
-  background-color: var(--dark-color);
+  background-color: transparent;
   color: var(--white-color);
   padding: 1.125rem 2rem;
   border-radius: 0.5rem;
@@ -620,6 +621,7 @@ img {
 .page-link:hover, .page-item.active .page-link {
   background-color: #F7941D;
   color: white;
+  border-bottom: none;
 }
 
 ul.pagination {

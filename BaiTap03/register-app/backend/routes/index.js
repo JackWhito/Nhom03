@@ -5,6 +5,9 @@ import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import { addToCart, removeFromCart, subtractQuantity, viewCart, removeAllFromCart } from '../controllers/Cart.js';
 import { createOrder, getOrderDetails, updateOrderStatus, updatePayment } from "../controllers/Order.js";
+import { getAllComment, getCommentByUser } from "../controllers/Comment.js";
+import { getAllVoucher, searchVoucher } from "../controllers/Voucher.js";
+import { getPointByUserID } from "../controllers/BonusPoint.js";
 
 const router = express.Router();
  
@@ -34,4 +37,12 @@ router.post('/create-order',createOrder);
 router.put('/update-order/:orderId',updateOrderStatus);
 router.get('/order/:orderId', getOrderDetails);
 router.put('/update-payment/:orderId',updatePayment);
+// Comment related
+router.get('/comments',getAllComment);
+router.get('/comments/:userId', getCommentByUser);
+// Voucher realted
+router.get('/vouchers',getAllVoucher);
+router.get('/vouchers/:voucherId',searchVoucher);
+// Point related
+router.get('/points/:userId',getPointByUserID);
 export default router;
