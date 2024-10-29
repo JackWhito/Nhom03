@@ -8,6 +8,7 @@ import { createOrder, getOrderDetails, updateOrderStatus, updatePayment } from "
 import { getAllComment, getCommentByUser } from "../controllers/Comment.js";
 import { getAllVoucher, searchVoucher } from "../controllers/Voucher.js";
 import { getPointByUserID } from "../controllers/BonusPoint.js";
+import { getViewedProducts } from "../controllers/ViewedProduct.js";
 
 const router = express.Router();
  
@@ -45,4 +46,6 @@ router.get('/vouchers',getAllVoucher);
 router.get('/vouchers/:voucherId',searchVoucher);
 // Point related
 router.get('/points/:userId',getPointByUserID);
+// Viewed related
+router.get('/viewed/:userId',getViewedProducts);
 export default router;

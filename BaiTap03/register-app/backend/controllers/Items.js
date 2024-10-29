@@ -66,3 +66,33 @@ export const getTopView = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getSimilarProducts = async (req, res) => {
+    const { productId } = req.params;
+    try {
+        // Fetch the product to find its category and tags
+        const product = await Product.findByPk(productId);
+        
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        const { category } = product;
+
+        // Find similar products by category
+        const similarProducts = await Product.findAll({
+            where: {
+                category: category,
+                id: {
+                    [Sequelize.Op.not]: productId
+                }
+            },
+            limit: 10
+        });
+
+        res.json(similarProducts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};

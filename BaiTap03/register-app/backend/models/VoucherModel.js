@@ -5,13 +5,12 @@ const { DataTypes } = Sequelize;
 
 const Voucher = db.define('voucher', {
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.STRING,
     primaryKey: true,
   },
   percent: {
-    type: DataTypes.FLOAT,
-    defaultValue: 0.0,
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
     allowNull: false,
   }
 }, {
