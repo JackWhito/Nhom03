@@ -10,7 +10,8 @@ const Logout = () => {
         const logout = async () => {
             try {
                 await axios.delete('http://localhost:5000/logout');
-                history.push('/login');
+                sessionStorage.clear();
+                history.push('/');
             } catch (error) {
                 console.error('Logout failed:', error);
             }

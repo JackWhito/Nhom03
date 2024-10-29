@@ -1,53 +1,43 @@
 import React from 'react';
-
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 const NavBar = () => {
-    
+    const [isAuthenticated, setIsAuthenticated] = useState(false); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // new state to manage dropdown visibility
+    const history = useHistory();
+    useEffect(() => {      
+        const storedToken = sessionStorage.getItem('token'); 
+        if (storedToken) { 
+          const decoded = jwtDecode(storedToken); 
+          if (decoded.exp * 1000 > Date.now()) { 
+              setIsAuthenticated(true);
+          } 
+        }
+    }, []);
+    const handleLogout = () => { 
+        sessionStorage.removeItem('token'); 
+        setIsAuthenticated(false); 
+        history.push('/logout');
+    };
+    const toggleDropdown = () => { setIsDropdownOpen(!isDropdownOpen); };
+    const closeDropdown = () => { setIsDropdownOpen(false); 
+
+    }; // Close the dropdown if the user clicks outside of it 
+    useEffect(() => { 
+        const handleClickOutside = (event) => { 
+            if (!event.target.closest('.userdropdown')) { 
+                closeDropdown(); 
+            } 
+        }; 
+        document.addEventListener('click', handleClickOutside); 
+        return () => { 
+            document.removeEventListener('click', handleClickOutside); 
+        }; 
+    }, []);
     return (
         <>
         <header className="header shop">
-            {/* Topbar */}
-            <div className="topbar">
-            <div className="container">
-                <div className="row">
-                <div className="col-lg-5 col-md-12 col-12">
-                    {/* Top Left */}
-                    <div className="top-left">
-                    <ul className="list-main">
-                        <li>
-                        <i className="ti-headphone-alt" /> +060 (800) 801-582
-                        </li>
-                        <li>
-                        <i className="ti-email" /> support@shophub.com
-                        </li>
-                    </ul>
-                    </div>
-                    {/*/ End Top Left */}
-                </div>
-                <div className="col-lg-7 col-md-12 col-12">
-                    {/* Top Right */}
-                    <div className="right-content">
-                    <ul className="list-main">
-                        <li>
-                        <i className="ti-location-pin" /> Store location
-                        </li>
-                        <li>
-                        <i className="ti-alarm-clock" /> <a href="#">Daily deal</a>
-                        </li>
-                        <li>
-                        <i className="ti-user" /> <a href="#">My account</a>
-                        </li>
-                        <li>
-                        <i className="ti-power-off" />
-                        <a href="./login">Login</a>
-                        </li>
-                    </ul>
-                    </div>
-                    {/* End Top Right */}
-                </div>
-                </div>
-            </div>
-            </div>
-            {/* End Topbar */}
             <div className="middle-inner">
             <div className="container">
                 <div className="row">
@@ -115,9 +105,17 @@ const NavBar = () => {
                         </a>
                     </div>
                     <div className="sinlge-bar">
-                        <a href="#" className="single-icon">
-                        <i className="fa fa-user-circle-o" aria-hidden="true" />
+                        <div className="userdropdown">
+                        <a href="#" className="single-icon" id="userDropdown" onClick={toggleDropdown}>
+                        <i className="fa fa-user-circle-o" /> {/* user icon */}
                         </a>
+                        {isDropdownOpen &&(
+                        <div className="dropmenu show" aria-labelledby="userDropdown">
+                            <a className="dropdown-item" href="#">Profile</a> 
+                            <a className="dropdown-item" href="#" onClick={handleLogout}>Logout</a>
+                        </div>
+                        )}
+                        </div>
                     </div>
                     <div className="sinlge-bar shopping">
                         <a href="#" className="single-icon">
@@ -128,7 +126,7 @@ const NavBar = () => {
                         <div className="shopping-item">
                         <div className="dropdown-cart-header">
                             <span>2 Items</span>
-                            <a href="#">View Cart</a>
+                            <a href="/cart">View Cart</a>
                         </div>
                         <ul className="shopping-list">
                             <li>
@@ -165,7 +163,7 @@ const NavBar = () => {
                             <span>Total</span>
                             <span className="total-amount">$134.00</span>
                             </div>
-                            <a href="checkout.html" className="btn animate">
+                            <a href="/checkout" className="btn animate">
                             Checkout
                             </a>
                         </div>
