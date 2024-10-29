@@ -15,7 +15,7 @@ const Login = () => {
                 email: email,
                 password: password
             });
-            history.push("/profile");
+            history.push("/");
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);

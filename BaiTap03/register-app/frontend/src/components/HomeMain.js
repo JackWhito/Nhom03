@@ -19,7 +19,6 @@ import '../htmltemplate/css/responsive.css';
 const HomeMain = () => {
     const Header = lazy(() => import('./Home/Header'));
     const Slider = lazy(() => import('./Home/Slider'));
-    const Banner = lazy(() => import('./Home/Banner'));
     const MediumBanner = lazy(() => import('./Home/MediumBanner'));
     const Sales = lazy(() => import('./Home/Sales'));
     const Services = lazy(() => import('./Home/Services'));
@@ -75,10 +74,9 @@ const HomeMain = () => {
         <Header />
         {/* Slider Area */}
         <Slider/>
-        {/* Start Small Banner  */}
-        <Banner/>
         {/* Start Top Products Area */}
         <Sales/>
+
         {/* Start Midium Banner  */}
         <MediumBanner/>
         {/* Start Shop Home List  */}

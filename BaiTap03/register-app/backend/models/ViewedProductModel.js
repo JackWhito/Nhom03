@@ -1,8 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import User from "./UserModel.js";
-import Product from "./ProductModel.js";
-
+import Product from "./ItemModel.js";
 const { DataTypes } = Sequelize;
 
 const ViewedProduct = db.define('viewedproduct', {
@@ -36,12 +35,6 @@ const ViewedProduct = db.define('viewedproduct', {
         defaultValue: DataTypes.NOW,
     }
 }, {
-    indexes: [
-        {
-            unique: true,
-            fields: ['userId', 'productId']
-        }
-    ],
     freezeTableName: true
 });
 User.hasMany(ViewedProduct, { foreignKey: 'userId' }); 

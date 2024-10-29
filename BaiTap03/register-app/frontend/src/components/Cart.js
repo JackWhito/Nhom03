@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; 
+import axios from 'axios'; 
+import {jwtDecode} from 'jwt-decode'; 
+import { useHistory } from 'react-router-dom';
 
 import '../htmltemplate/css/bootstrap.css';
 import '../htmltemplate/css/magnific-popup.min.css';
@@ -20,6 +23,60 @@ import Footer from './Home/Footer';
 import CartBody from './Cart/CartBody';
 
 const Cart = () => {
+    const [token, setToken] = useState('');
+    const [expire, setExpire] = useState(''); 
+    const [cartItems, setCartItems] = useState([]); 
+    const history = useHistory(); 
+
+    const axiosJWT = axios.create(); 
+    axiosJWT.interceptors.request.use(async (config) => { 
+        const currentDate = new Date(); 
+        if (expire * 1000 < currentDate.getTime()) { 
+            const response = await axios.get('http://localhost:5000/token'); 
+            config.headers.Authorization = `Bearer ${response.data.accessToken}`; 
+            setToken(response.data.accessToken); 
+            const decoded = jwtDecode(response.data.accessToken); 
+            setExpire(decoded.exp); 
+        } 
+        return config; 
+    }, (error) => { 
+        return Promise.reject(error); 
+    }); 
+
+    const refreshToken = useCallback(async () => { 
+        try { const response = await axios.get('http://localhost:5000/token'); 
+            setToken(response.data.accessToken); 
+            const decoded = jwtDecode(response.data.accessToken); 
+            setExpire(decoded.exp); 
+        } catch (error) { 
+            if (error.response) { 
+                history.push("/login"); 
+            } 
+        } 
+    },[history]); 
+    
+    const getCartItems = useCallback(async () => {
+        try {
+          const response = await axiosJWT.get('http://localhost:5000/cart', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            params: { userId: jwtDecode.userId } // assuming the token contains userId
+          });
+          setCartItems(response.data);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              console.error('Cart not found');
+            } else {
+              console.error('Failed to fetch cart items', error.response.data.error);
+            }
+          } else {
+            console.error('Failed to fetch cart items', error.message);
+          }
+        }
+      },[token, axiosJWT]);
+      useEffect(() => { refreshToken(); getCartItems(); }, [refreshToken, getCartItems]);
 
     return (
         <>
@@ -67,7 +124,7 @@ const Cart = () => {
         {/* Header */}
         <NavBar/>
         {/* Shopping Cart */}
-        <CartBody/>
+        <CartBody items={cartItems}/>
         {/* Start Shop Services Area  */}
         <Services/>
         {/* Start Shop Newsletter  */}
