@@ -17,7 +17,7 @@ const MediumBanner = () => {
                         Man's items <br />
                         Up to<span> 50%</span>
                     </h3>
-                    <a href="#">Shop Now</a>
+                    <a href="#products">Shop Now</a>
                     </div>
                 </div>
                 </div>
@@ -31,7 +31,7 @@ const MediumBanner = () => {
                     <h3>
                         mid season <br /> up to <span>70%</span>
                     </h3>
-                    <a href="#" className="btn">
+                    <a href="#products" className="btn">
                         Shop Now
                     </a>
                     </div>

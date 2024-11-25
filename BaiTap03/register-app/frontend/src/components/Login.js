@@ -7,32 +7,30 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
     const history = useHistory();
-    
+  
     const Auth = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5000/login', {
-                email: email,
-                password: password
-            });
-            
-            // Capture the token from the response
-            const { accessToken } = response.data;
-            
-            // Store the token in localStorage
-            sessionStorage.setItem('token', accessToken);
-            
-            // Optionally, you can store in sessionStorage instead
-            // sessionStorage.setItem('token', accessToken);
-            
-            history.push("/");
-        } catch (error) {
-            if (error.response) {
-                setMsg(error.response.data.msg);
-            }
+      e.preventDefault();
+      try {
+        const response = await axios.post('http://localhost:5000/login', {
+          email: email,
+          password: password
+        });
+  
+        // Check if access token exists before saving
+        if (response.data.accessToken) {
+          const { accessToken } = response.data;
+          localStorage.setItem('accessToken', accessToken);
+        } else {
+          setMsg("Login failed: Access token not received");
         }
-    };
-    
+  
+        history.push("/");
+      } catch (error) {
+        if (error.response) {
+          setMsg(error.response.data.msg);
+        }
+      }
+    };    
 
     return (
         <section className="hero has-background-grey-light is-fullheight is-fullwidth">

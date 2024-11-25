@@ -1,7 +1,7 @@
 import Cart from "../models/CartModel.js";
 import CartItem from "../models/CartItemModel.js";
 import Product from "../models/ItemModel.js";
-
+import ProductImage from "../models/ProductImagesModel.js";
 export const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
@@ -56,16 +56,22 @@ export const removeFromCart = async (req, res) => {
 
 export const viewCart = async (req, res) => {
   try {
-    const { userId } = req.query;
-
-    const cart = await Cart.findOne({ 
+    const { userId } = req.body;
+    const cart = await Cart.findOne({
       where: { userId },
-      include: [{ model: CartItem, include: [Product] }]
+      include: [{ model: CartItem, include: [{ model: Product }] }]
     });
+
     if (!cart) {
       return res.status(404).json({ error: 'Cart not found' });
     }
-    res.json(cart);
+
+    const products = cart.cartItems.map(cartItem => ({
+      product: cartItem.product,
+      quantity: cartItem.quantity
+    }));
+
+    res.json(products);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });

@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyOtp, forgotPassword, resetPassword, checkUser, getUsers, Register, Login, Logout } from "../controllers/Users.js";
-import { searchItems, filterItems, getTopSeller, getTopView } from "../controllers/Items.js";
+import { searchItems, filterItems, getTopSeller, getTopView, getItemsById, getItemsByIdWithImages, getAllItems, getAllItemsWithImages } from "../controllers/Items.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import { addToCart, removeFromCart, subtractQuantity, viewCart, removeAllFromCart } from '../controllers/Cart.js';
@@ -9,6 +9,7 @@ import { getAllComment, getCommentByUser } from "../controllers/Comment.js";
 import { getAllVoucher, searchVoucher } from "../controllers/Voucher.js";
 import { getPointByUserID } from "../controllers/BonusPoint.js";
 import { getViewedProducts } from "../controllers/ViewedProduct.js";
+import { getProductImages } from "../controllers/ProducImages.js";
 
 const router = express.Router();
  
@@ -27,10 +28,13 @@ router.get('/items/search',searchItems);
 router.get('/items/filter', filterItems);
 router.get('/items/topsell', getTopSeller);
 router.get('/items/topview', getTopView);
+router.get('/items/:productId',getItemsByIdWithImages);
+router.get('/items',getAllItems);
+router.get('/images/all',getAllItemsWithImages);
 // Cart related
 router.post('/cart/add', addToCart);
 router.post('/cart/remove', removeFromCart);
-router.get('/cart', viewCart);
+router.post('/cart/all', viewCart);
 router.post('/cart/subtract', subtractQuantity);
 router.post('/cart/empty', removeAllFromCart);
 // Order related
@@ -48,4 +52,6 @@ router.get('/vouchers/:voucherId',searchVoucher);
 router.get('/points/:userId',getPointByUserID);
 // Viewed related
 router.get('/viewed/:userId',getViewedProducts);
+// image related
+router.get('/images/:productId',getProductImages);
 export default router;

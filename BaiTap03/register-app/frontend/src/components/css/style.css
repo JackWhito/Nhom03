@@ -624,7 +624,7 @@ Version:1.0
 }
 .header.shop .logo {
 	float: left;
-	margin: 19px 0 0;
+	margin: 0px 0 0;
 }
 .header.shop .top-contact {
 	margin-top:0px;
@@ -1765,6 +1765,8 @@ Version:1.0
   position: relative;
   overflow: hidden;
   cursor:pointer;
+  width: 275px;
+  height: 375px;
 }
 .single-product .product-img a {
   display: block;
@@ -2839,6 +2841,8 @@ Version:1.0
 }
 .shop-home-list .single-list .list-image{
 	position:relative;
+	width: 115px;
+	height: 140px;
 }
 .shop-home-list .single-list .list-image.overlay:before{
 	background:#000;
@@ -2900,6 +2904,7 @@ Version:1.0
 .shop-home-list .single-list .content .title a{
 	font-size: 14px;
 	font-weight: 600;
+	color: #000;
 }
 .shop-home-list .single-list .content .titlea {
 	color: #333;
@@ -5026,4 +5031,18 @@ Version:1.0
   
   .dropmenu a:hover {
 	background-color: #f1f1f1;
+  }
+
+  .brand-name {
+	font-size: 25px;
+  }
+  
+  .product-name {
+	font-size: 33px;
+  }
+
+  .logoimage{
+	width: 100px;
+	height: 100px;
+	background-color: transparent;
   }

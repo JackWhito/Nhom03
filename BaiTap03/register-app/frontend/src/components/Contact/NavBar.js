@@ -1,4 +1,5 @@
 import React from 'react';
+import logoimg from "../images/M-logo.jpg";
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -44,8 +45,8 @@ const NavBar = () => {
                 <div className="col-lg-2 col-md-2 col-12">
                     {/* Logo */}
                     <div className="logo">
-                    <a href="./">
-                        <img src="images/logo.png" alt="logo" />
+                    <a href="/">
+                        <img className="logoimage"src={logoimg} alt="logo" />
                     </a>
                     </div>
                     {/*/ End Logo */}
@@ -188,32 +189,15 @@ const NavBar = () => {
                             <div className="nav-inner">
                             <ul className="nav main-menu menu navbar-nav">
                                 <li className="active">
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
                                 </li>
                                 <li>
-                                <a href="#">Product</a>
+                                <a href="/">Product</a>
                                 </li>
                                 <li>
-                                <a href="#">Service</a>
                                 </li>
                                 <li>
-                                <a href="#">
-                                    Shop
-                                    <i className="ti-angle-down" />
-                                    <span className="new">New</span>
-                                </a>
-                                <ul className="dropdown">
-                                    <li>
-                                    <a href="cart.html">Cart</a>
-                                    </li>
-                                    <li>
-                                    <a href="checkout.html">Checkout</a>
-                                    </li>
-                                </ul>
-                                </li>
-
-                                <li>
-                                <a href="contact.html">Contact Us</a>
+                                <a href="/contact">Contact Us</a>
                                 </li>
                             </ul>
                             </div>
@@ -228,28 +212,6 @@ const NavBar = () => {
             </div>
             {/*/ End Header Inner */}
         </header>
-        {/* Breadcrumbs */}
-        <div className="breadcrumbs">
-            <div className="container">
-            <div className="row">
-                <div className="col-12">
-                <div className="bread-inner">
-                    <ul className="bread-list">
-                    <li>
-                        <a href="index1.html">
-                        Home
-                        <i className="ti-arrow-right" />
-                        </a>
-                    </li>
-                    <li className="active">
-                        <a href="blog-single.html">Contact</a>
-                    </li>
-                    </ul>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
         </>
     );
 }

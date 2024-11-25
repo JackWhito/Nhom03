@@ -1,4 +1,5 @@
 import React from 'react';
+import srcimg from "../images/M-logo.jpg";
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -55,8 +56,8 @@ const Header = () => {
                 <div className="col-lg-2 col-md-2 col-12">
                     {/* Logo */}
                     <div className="logo">
-                    <a href="index.html">
-                        <img src="images/logo.png" alt="logo" />
+                    <a href="/">
+                        <img className="logoimage"src={srcimg} alt="logo" />
                     </a>
                     </div>
                     {/*/ End Logo */}
@@ -118,7 +119,7 @@ const Header = () => {
                     </div>
                     <div className="sinlge-bar">
                         <div className="userdropdown">
-                        <a href="#" className="single-icon" id="userDropdown" onClick={toggleDropdown}>
+                        <a className="single-icon" id="userDropdown" onClick={toggleDropdown}>
                         <i className="fa fa-user-circle-o" /> {/* user icon */}
                         </a>
                         {isDropdownOpen &&(
@@ -200,57 +201,22 @@ const Header = () => {
                         </h3>
                         <ul className="main-category">
                         <li>
-                            <a href="#">
-                            New Arrivals{" "}
-                            <i className="fa fa-angle-right" aria-hidden="true" />
-                            </a>
-                            <ul className="sub-category">
-                            <li>
-                                <a href="#">accessories</a>
-                            </li>
-                            <li>
-                                <a href="#">sunglass</a>
-                            </li>
-                            <li>
-                                <a href="#">watch</a>
-                            </li>
-                            <li>
-                                <a href="#">man’s product</a>
-                            </li>
-                            <li>
-                                <a href="#">ladies</a>
-                            </li>
-                            <li>
-                                <a href="#">westrn dress</a>
-                            </li>
-                            <li>
-                                <a href="#">denim </a>
-                            </li>
-                            </ul>
+                            <a href="#">smart phones</a>
                         </li>
                         <li>
-                            <a href="#">accessories</a>
+                            <a href="#">laptops</a>
                         </li>
                         <li>
-                            <a href="#">top 100 offer</a>
+                            <a href="#">tablets</a>
                         </li>
                         <li>
-                            <a href="#">sunglass</a>
+                            <a href="#">smartwatch</a>
                         </li>
                         <li>
-                            <a href="#">watch</a>
+                            <a href="#">gaming consoles</a>
                         </li>
                         <li>
-                            <a href="#">man’s product</a>
-                        </li>
-                        <li>
-                            <a href="#">ladies</a>
-                        </li>
-                        <li>
-                            <a href="#">westrn dress</a>
-                        </li>
-                        <li>
-                            <a href="#">denim </a>
+                            <a href="#">cameras</a>
                         </li>
                         </ul>
                     </div>
@@ -263,26 +229,23 @@ const Header = () => {
                             <div className="nav-inner">
                             <ul className="nav main-menu menu navbar-nav">
                                 <li className="Pagactive">
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
                                 </li>
                                 <li>
                                 <a href="#products">Product</a>
                                 </li>
                                 <li>
-                                <a href="#">Service</a>
-                                </li>
-                                <li>
-                                <a href="#">
+                                <a>
                                     Shop
                                     <i className="ti-angle-down" />
                                     <span className="new">New</span>
                                 </a>
                                 <ul className="dropdown">
                                     <li>
-                                    <a href="cart.html">Cart</a>
+                                    <a href="/cart">Cart</a>
                                     </li>
                                     <li>
-                                    <a href="checkout.html">Checkout</a>
+                                    <a href="/checkout">Checkout</a>
                                     </li>
                                 </ul>
                                 </li>

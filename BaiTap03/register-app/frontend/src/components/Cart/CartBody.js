@@ -1,7 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; 
+import axios from 'axios'; 
+import {jwtDecode} from 'jwt-decode'; 
+import { useHistory } from 'react-router-dom';
 import '../css/style.css'
 const CartBody = () => {
+    const [token, setToken] = useState('');
+    const [expire, setExpire] = useState(''); 
+    const [userId, setUserid] = useState('');
+    const [cartItems, setCartItems] = useState([]); 
+    const [cartItemsFetched, setCartItemsFetched] = useState(false);
+    const history = useHistory(); 
+
+    const axiosJWT = axios.create(); 
+    axiosJWT.interceptors.request.use(async (config) => { 
+        const currentDate = new Date(); 
+        if (expire * 1000 < currentDate.getTime()) { 
+            const response = await axios.get('http://localhost:5000/token'); 
+            config.headers.Authorization = `Bearer ${response.data.accessToken}`; 
+            setToken(response.data.accessToken); 
+            const decoded = jwtDecode(response.data.accessToken); 
+            setExpire(decoded.exp);
+            const userid = jwtDecode(token).userId;
+            setUserid(userid);
+        } 
+        return config; 
+    }, (error) => { 
+        return Promise.reject(error); 
+    }); 
+  
+    const refreshToken = useCallback(async () => { 
+        try { const response = await axios.get('http://localhost:5000/token'); 
+            setToken(response.data.accessToken); 
+            const decoded = jwtDecode(response.data.accessToken); 
+            setExpire(decoded.exp);
+            
+        } catch (error) { 
+            if (error.response) { 
+                history.push("/login"); 
+            } 
+        } 
+    },[history]); 
     
+    const total = cartItems.reduce((acc, item) => {
+        return acc + item.quantity * item.product.price;
+      }, 0);
+
+    const getCartItems = useCallback(async () => {
+        if (cartItemsFetched) return; // Skip if already fetched
+        try {
+            const response = await axiosJWT.post('http://localhost:5000/cart/all', {
+                userId
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCartItemsFetched(true); // Mark fetched
+            setCartItems(response.data);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              console.error('Cart not found');
+            } else {
+              console.error('Failed to fetch cart items', error.response.data.error);
+            }
+          } else {
+            console.error('Failed to fetch cart items', error.message);
+          }
+        }
+      }, [axiosJWT, token, userId]);
+
+    useEffect(() => { refreshToken(); getCartItems(); }, [refreshToken, getCartItems]);
+
     return (
         <>
         <div className="shopping-cart section">
@@ -18,25 +88,25 @@ const CartBody = () => {
                         <th className="text-center">QUANTITY</th>
                         <th className="text-center">TOTAL</th>
                         <th className="text-center">
-                        <i className="ti-trash remove-icon" />
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    {cartItems.map((cartItem) =>(
+                    <tr key={cartItem.product.id}>
                         <td className="image" data-title="No">
                         <img src="https://via.placeholder.com/100x100" alt="#" />
                         </td>
                         <td className="product-des" data-title="Description">
                         <p className="product-name">
-                            <a href="#">Women Dress</a>
+                            <a href="#">{cartItem.product.name}</a>
                         </p>
                         <p className="product-des">
-                            Maboriosam in a tonto nesciung eget distingy magndapibus.
+                            {cartItem.product.description}
                         </p>
                         </td>
                         <td className="price" data-title="Price">
-                        <span>$110.00 </span>
+                        <span>${cartItem.product.price} </span>
                         </td>
                         <td className="qty" data-title="Qty">
                         {/* Input Order */}
@@ -57,7 +127,7 @@ const CartBody = () => {
                             className="input-number"
                             data-min={1}
                             data-max={100}
-                            defaultValue={1}
+                            defaultValue={cartItem.quantity}
                             />
                             <div className="button plus">
                             <button
@@ -73,7 +143,7 @@ const CartBody = () => {
                         {/*/ End Input Order */}
                         </td>
                         <td className="total-amount" data-title="Total">
-                        <span>$220.88</span>
+                        <span>${(cartItem.quantity * cartItem.product.price).toFixed(2)}</span>
                         </td>
                         <td className="action" data-title="Remove">
                         <a href="#">
@@ -81,124 +151,7 @@ const CartBody = () => {
                         </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td className="image" data-title="No">
-                        <img src="https://via.placeholder.com/100x100" alt="#" />
-                        </td>
-                        <td className="product-des" data-title="Description">
-                        <p className="product-name">
-                            <a href="#">Women Dress</a>
-                        </p>
-                        <p className="product-des">
-                            Maboriosam in a tonto nesciung eget distingy magndapibus.
-                        </p>
-                        </td>
-                        <td className="price" data-title="Price">
-                        <span>$110.00 </span>
-                        </td>
-                        <td className="qty" data-title="Qty">
-                        {/* Input Order */}
-                        <div className="input-group">
-                            <div className="button minus">
-                            <button
-                                type="button"
-                                className="btn btn-primary btn-number"
-                                disabled="disabled"
-                                data-type="minus"
-                                data-field="quant[2]"
-                            >
-                                <i className="ti-minus" />
-                            </button>
-                            </div>
-                            <input
-                            type="text"
-                            name="quant[2]"
-                            className="input-number"
-                            data-min={1}
-                            data-max={100}
-                            defaultValue={2}
-                            />
-                            <div className="button plus">
-                            <button
-                                type="button"
-                                className="btn btn-primary btn-number"
-                                data-type="plus"
-                                data-field="quant[2]"
-                            >
-                                <i className="ti-plus" />
-                            </button>
-                            </div>
-                        </div>
-                        {/*/ End Input Order */}
-                        </td>
-                        <td className="total-amount" data-title="Total">
-                        <span>$220.88</span>
-                        </td>
-                        <td className="action" data-title="Remove">
-                        <a href="#">
-                            <i className="ti-trash remove-icon" />
-                        </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="image" data-title="No">
-                        <img src="https://via.placeholder.com/100x100" alt="#" />
-                        </td>
-                        <td className="product-des" data-title="Description">
-                        <p className="product-name">
-                            <a href="#">Women Dress</a>
-                        </p>
-                        <p className="product-des">
-                            Maboriosam in a tonto nesciung eget distingy magndapibus.
-                        </p>
-                        </td>
-                        <td className="price" data-title="Price">
-                        <span>$110.00 </span>
-                        </td>
-                        <td className="qty" data-title="Qty">
-                        {/* Input Order */}
-                        <div className="input-group">
-                            <div className="button minus">
-                            <button
-                                type="button"
-                                className="btn btn-primary btn-number"
-                                disabled="disabled"
-                                data-type="minus"
-                                data-field="quant[3]"
-                            >
-                                <i className="ti-minus" />
-                            </button>
-                            </div>
-                            <input
-                            type="text"
-                            name="quant[3]"
-                            className="input-number"
-                            data-min={1}
-                            data-max={100}
-                            defaultValue={3}
-                            />
-                            <div className="button plus">
-                            <button
-                                type="button"
-                                className="btn btn-primary btn-number"
-                                data-type="plus"
-                                data-field="quant[3]"
-                            >
-                                <i className="ti-plus" />
-                            </button>
-                            </div>
-                        </div>
-                        {/*/ End Input Order */}
-                        </td>
-                        <td className="total-amount" data-title="Total">
-                        <span>$220.88</span>
-                        </td>
-                        <td className="action" data-title="Remove">
-                        <a href="#">
-                            <i className="ti-trash remove-icon" />
-                        </a>
-                        </td>
-                    </tr>
+                     ))}
                     </tbody>
                 </table>
                 {/*/ End Shopping Summery */}
@@ -211,41 +164,26 @@ const CartBody = () => {
                     <div className="row">
                     <div className="col-lg-8 col-md-5 col-12">
                         <div className="left">
-                        <div className="coupon">
-                            <form action="#" target="_blank">
-                            <input name="Coupon" placeholder="Enter Your Coupon" />
-                            <button className="btn">Apply</button>
-                            </form>
-                        </div>
-                        <div className="checkbox">
-                            <label className="checkbox-inline" htmlFor={2}>
-                            <input name="news" id={2} type="checkbox" /> Shipping
-                            (+10$)
-                            </label>
-                        </div>
                         </div>
                     </div>
                     <div className="col-lg-4 col-md-7 col-12">
                         <div className="right">
                         <ul>
                             <li>
-                            Cart Subtotal<span>$330.00</span>
+                            Cart Subtotal<span>${total}</span>
                             </li>
                             <li>
                             Shipping<span>Free</span>
                             </li>
-                            <li>
-                            You Save<span>$20.00</span>
-                            </li>
                             <li className="last">
-                            You Pay<span>$310.00</span>
+                            You Pay<span>${total}</span>
                             </li>
                         </ul>
                         <div className="button5">
-                            <a href="#" className="btn">
+                            <a href="/checkout" className="btn">
                             Checkout
                             </a>
-                            <a href="#" className="btn">
+                            <a href="/" className="btn">
                             Continue shopping
                             </a>
                         </div>

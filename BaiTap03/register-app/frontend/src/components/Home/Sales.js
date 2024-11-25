@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Sales = () => {
+    const [product, setProduct] = useState(null);
+    const [error, setError] = useState(null);
     
-    return (
+    useEffect(() => {
+      const fetchProductDetails = async () => {
+        try {
+          const response  = await axios.get(`http://localhost:5000/items`);   
+          setProduct(response.data);
+        } catch (error) {
+          setError(error);
+          console.error('Error fetching product details:', error);
+        }
+      };
+    
+      fetchProductDetails();
+    }, []); // Empty dependency array to fetch data once
+    
+    const filterProductsOnSale = () => {
+        if (!product) return; // Handle case where products haven't been fetched yet
+        return product.filter((item) => item.onsale === false); // Filter by onSale property
+    };    
+
+    const sortProductsByViews = () => {
+        if (!product) return; // Handle case where products haven't been fetched yet
+        return product.sort((a, b) => b.viewed - a.viewed).slice(0, 3); // Sort descending by views and get top 3
+    };
+
+    const sortProductsBySold = () => {
+        if (!product) return; // Handle case where products haven't been fetched yet
+        return product.sort((a, b) => b.sold - a.sold).slice(0, 3); // Sort descending by views and get top 3
+    };
+return (
         <>
         <section className="shop-home-list section">
             <div className="container">
             <div className="row">
-                <div className="col-lg-4 col-md-6 col-12">
+                <div className="col-lg-4 col-md-6 col-12"> {/* On Sale */}
                 <div className="row">
                     <div className="col-12">
                     <div className="shop-section-title">
@@ -15,35 +46,14 @@ const Sales = () => {
                     </div>
                     </div>
                 </div>
-                {/* Start Single List  */}
+                {product?.length > 0 && ( filterProductsOnSale().slice(0, 3).map((product) => (
+                <tr key={product.id}>
                 <div className="single-list">
                     <div className="row">
                     <div className="col-lg-6 col-md-6 col-12">
                         <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h4 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h4>
-                        <p className="price with-discount">$59</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
+                        <img src={product.imageUrl} alt={product.name} />
+                        <a href={'/product/'+ product.id} className="buy">
                             <i className="fa fa-shopping-bag" />
                         </a>
                         </div>
@@ -51,38 +61,17 @@ const Sales = () => {
                     <div className="col-lg-6 col-md-6 col-12 no-padding">
                         <div className="content">
                         <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
+                            <a href={'/product/'+ product.id}>{product.name}</a>
                         </h5>
-                        <p className="price with-discount">$44</p>
+                        <p className="price with-discount">${product.price.toFixed(2)}</p>
                         </div>
                     </div>
                     </div>
                 </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h5>
-                        <p className="price with-discount">$89</p>
-                        </div>
-                    </div>
-                    </div>
+                </tr>
+                )))}
                 </div>
-                {/* End Single List  */}
-                </div>
-                <div className="col-lg-4 col-md-6 col-12">
+                <div className="col-lg-4 col-md-6 col-12"> {/* Best Saler  */}
                 <div className="row">
                     <div className="col-12">
                     <div className="shop-section-title">
@@ -91,12 +80,14 @@ const Sales = () => {
                     </div>
                 </div>
                 {/* Start Single List  */}
+                {product?.length > 0 && ( sortProductsBySold().slice(0, 3).map((product) => (
+                <tr key={product.id}>
                 <div className="single-list">
                     <div className="row">
                     <div className="col-lg-6 col-md-6 col-12">
                         <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
+                        <img src={product.imageUrl} alt={product.name} />
+                        <a href={'/product/'+ product.id} className="buy">
                             <i className="fa fa-shopping-bag" />
                         </a>
                         </div>
@@ -104,60 +95,17 @@ const Sales = () => {
                     <div className="col-lg-6 col-md-6 col-12 no-padding">
                         <div className="content">
                         <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
+                            <a href={'/product/'+ product.id}>{product.name}</a>
                         </h5>
-                        <p className="price with-discount">$65</p>
+                        <p className="price with-discount">${product.price.toFixed(2)}</p>
                         </div>
                     </div>
                     </div>
                 </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h5>
-                        <p className="price with-discount">$33</p>
-                        </div>
-                    </div>
-                    </div>
+                </tr>
+                )))}
                 </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h5>
-                        <p className="price with-discount">$77</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                {/* End Single List  */}
-                </div>
-                <div className="col-lg-4 col-md-6 col-12">
+                <div className="col-lg-4 col-md-6 col-12"> {/* Most Viewed */}
                 <div className="row">
                     <div className="col-12">
                     <div className="shop-section-title">
@@ -166,12 +114,14 @@ const Sales = () => {
                     </div>
                 </div>
                 {/* Start Single List  */}
+                {product?.length > 0 && (sortProductsByViews().map((product) => (
+                <tr key={product.id}>
                 <div className="single-list">
                     <div className="row">
                     <div className="col-lg-6 col-md-6 col-12">
                         <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
+                        <img src={product.imageUrl} alt={product.name} />
+                        <a href={'/product/'+ product.id} className="buy">
                             <i className="fa fa-shopping-bag" />
                         </a>
                         </div>
@@ -179,57 +129,15 @@ const Sales = () => {
                     <div className="col-lg-6 col-md-6 col-12 no-padding">
                         <div className="content">
                         <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
+                            <a href={'/product/'+ product.id}>{product.name}</a>
                         </h5>
-                        <p className="price with-discount">$22</p>
+                        <p className="price with-discount">${product.price.toFixed(2)}</p>
                         </div>
                     </div>
                     </div>
                 </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h5>
-                        <p className="price with-discount">$35</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                {/* End Single List  */}
-                {/* Start Single List  */}
-                <div className="single-list">
-                    <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                        <div className="list-image overlay">
-                        <img src="https://via.placeholder.com/115x140" alt="#" />
-                        <a href="#" className="buy">
-                            <i className="fa fa-shopping-bag" />
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12 no-padding">
-                        <div className="content">
-                        <h5 className="title">
-                            <a href="#">Licity jelly leg flat Sandals</a>
-                        </h5>
-                        <p className="price with-discount">$99</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                </tr>
+                )))}
                 {/* End Single List  */}
                 </div>
             </div>

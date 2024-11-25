@@ -1,6 +1,7 @@
 import Product from "../models/ItemModel.js";
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+import ProductImage from "../models/ProductImagesModel.js";
 dotenv.config();
 
 export const searchItems = async (req, res) => {
@@ -91,6 +92,62 @@ export const getSimilarProducts = async (req, res) => {
         });
 
         res.json(similarProducts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+export const getItemsById = async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        const item = await Product.findByPk(productId);
+
+        if (!item) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.json(item);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+export const getItemsByIdWithImages = async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        const product = await Product.findByPk(productId, {
+            include: [ProductImage]
+        });
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.json(product);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getAllItems = async (req, res) => {
+    try {
+        const items = await Product.findAll();
+        res.json(items);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getAllItemsWithImages = async (req, res) => {
+    try {
+        const items = await Product.findAll({
+            include:[ProductImage]
+        });
+        res.json(items);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });

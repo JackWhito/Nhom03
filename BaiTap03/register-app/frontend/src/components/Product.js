@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React from 'react'; 
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import '../htmltemplate/css/bootstrap.css';
 import '../htmltemplate/css/magnific-popup.min.css';
 import '../htmltemplate/css/font-awesome.css';
@@ -17,10 +17,10 @@ import NavBar from './Contact/NavBar';
 import Services from './Home/Services';
 import Newsletter from './Home/NewsLetter';
 import Footer from './Home/Footer';
-import CartBody from './Cart/CartBody';
+import ProductDetail from './ProductDetails/ProductDetail';
 
-const Cart = () => {
-
+const Product = () => {
+    const { productId } = useParams();
     return (
         <>
         <head>
@@ -67,7 +67,7 @@ const Cart = () => {
         {/* Header */}
         <NavBar/>
         {/* Shopping Cart */}
-        <CartBody/>
+        <ProductDetail productId={productId}/>
         {/* Start Shop Services Area  */}
         <Services/>
         {/* Start Shop Newsletter  */}
@@ -79,4 +79,4 @@ const Cart = () => {
     )
 }
 
-export default Cart;
+export default Product;

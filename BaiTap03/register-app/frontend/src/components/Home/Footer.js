@@ -1,5 +1,6 @@
 import React from 'react';
-
+import srcimg from "../images/M-logo.jpg";
+import payments from "../images/payments.png";
 const Footer = () => {
     
     return (
@@ -13,14 +14,12 @@ const Footer = () => {
                     {/* Single Widget */}
                     <div className="single-footer about">
                     <div className="logo">
-                        <a href="index.html">
-                        <img src="images/logo2.png" alt="#" />
+                        <a href="/">
+                        <img className="logoimage" src={srcimg} alt="#" />
                         </a>
                     </div>
                     <p className="text">
-                        Praesent dapibus, neque id cursus ucibus, tortor neque egestas
-                        augue, magna eros eu erat. Aliquam erat volutpat. Nam dui mi,
-                        tincidunt quis, accumsan porttitor, facilisis luctus, metus.
+                    Looking for the perfect tech gadget? We've got you covered. From gaming consoles to smartwatches, our online store offers a diverse selection of electronics to suit every need.
                     </p>
                     <p className="call">
                         Got Question? Call us 24/7
@@ -37,19 +36,19 @@ const Footer = () => {
                     <h4>Information</h4>
                     <ul>
                         <li>
-                        <a href="#">About Us</a>
+                        <a>About Us</a>
                         </li>
                         <li>
-                        <a href="#">Faq</a>
+                        <a>Faq</a>
                         </li>
                         <li>
-                        <a href="#">Terms &amp; Conditions</a>
+                        <a>Terms &amp; Conditions</a>
                         </li>
                         <li>
-                        <a href="#">Contact Us</a>
+                        <a>Contact Us</a>
                         </li>
                         <li>
-                        <a href="#">Help</a>
+                        <a>Help</a>
                         </li>
                     </ul>
                     </div>
@@ -61,19 +60,19 @@ const Footer = () => {
                     <h4>Customer Service</h4>
                     <ul>
                         <li>
-                        <a href="#">Payment Methods</a>
+                        <a>Payment Methods</a>
                         </li>
                         <li>
-                        <a href="#">Money-back</a>
+                        <a>Money-back</a>
                         </li>
                         <li>
-                        <a href="#">Returns</a>
+                        <a>Returns</a>
                         </li>
                         <li>
-                        <a href="#">Shipping</a>
+                        <a>Shipping</a>
                         </li>
                         <li>
-                        <a href="#">Privacy Policy</a>
+                        <a>Privacy Policy</a>
                         </li>
                     </ul>
                     </div>
@@ -82,35 +81,35 @@ const Footer = () => {
                 <div className="col-lg-3 col-md-6 col-12">
                     {/* Single Widget */}
                     <div className="single-footer social">
-                    <h4>Get In Tuch</h4>
+                    <h4>Get In Touch</h4>
                     {/* Single Widget */}
                     <div className="contact">
                         <ul>
-                        <li>NO. 342 - London Oxford Street.</li>
-                        <li>012 United Kingdom.</li>
-                        <li>info@eshop.com</li>
+                        <li>No. 1 - Vo Van Ngan Street.</li>
+                        <li>Thu Duc, Ho Chi Minh city.</li>
+                        <li>mitostravel.work@gmail.com</li>
                         <li>+032 3456 7890</li>
                         </ul>
                     </div>
                     {/* End Single Widget */}
                     <ul>
                         <li>
-                        <a href="#">
+                        <a>
                             <i className="ti-facebook" />
                         </a>
                         </li>
                         <li>
-                        <a href="#">
+                        <a>
                             <i className="ti-twitter" />
                         </a>
                         </li>
                         <li>
-                        <a href="#">
+                        <a>
                             <i className="ti-flickr" />
                         </a>
                         </li>
                         <li>
-                        <a href="#">
+                        <a>
                             <i className="ti-instagram" />
                         </a>
                         </li>
@@ -129,9 +128,9 @@ const Footer = () => {
                     <div className="col-lg-6 col-12">
                     <div className="left">
                         <p>
-                        Copyright © 2020{" "}
-                        <a href="http://www.wpthemesgrid.com" target="_blank">
-                            Wpthemesgrid
+                        Copyright © 2024{" "}
+                        <a target="_blank">
+                            Mito's Store
                         </a>{" "}
                         - All Rights Reserved.
                         </p>
@@ -139,7 +138,7 @@ const Footer = () => {
                     </div>
                     <div className="col-lg-6 col-12">
                     <div className="right">
-                        <img src="images/payments.png" alt="#" />
+                        <img src={payments} alt="#" />
                     </div>
                     </div>
                 </div>

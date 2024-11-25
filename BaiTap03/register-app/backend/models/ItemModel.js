@@ -17,6 +17,10 @@ const Product = db.define('products', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    brand:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     price: {
         type: DataTypes.FLOAT,
         allowNull: false
@@ -37,6 +41,10 @@ const Product = db.define('products', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         allowNull: false
+    },
+    onsale:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     freezeTableName: true

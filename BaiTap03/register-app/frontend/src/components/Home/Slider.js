@@ -6,7 +6,7 @@ const Slider = () => {
     
     return (
         <>
-                <section className="hero-slider">
+            <section className="hero-slider">
             {/* Single Slider */}
             <div className="single-slider">
             <div className="container">
@@ -25,7 +25,7 @@ const Slider = () => {
                             maboriosm.
                             </p>
                             <div className="button">
-                            <a href="#" className="btn">
+                            <a href="#products" className="btn">
                                 Shop Now!
                             </a>
                             </div>

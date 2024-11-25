@@ -8,11 +8,15 @@ import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Contact from "./components/Contact";
 import Logout from "./components/Logout";
+import Product from "./components/Product";
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
+          <Home/>
+        </Route>
+        <Route path="/home">
           <Home/>
         </Route>
         <Route path="/register">
@@ -41,6 +45,9 @@ function App() {
         </Route>
         <Route path="/logout">
           <Logout/>
+        </Route>
+        <Route path="/product/:productId">
+          <Product/>
         </Route>
       </Switch>
     </BrowserRouter>
