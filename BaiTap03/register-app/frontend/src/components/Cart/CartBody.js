@@ -69,6 +69,77 @@ const CartBody = () => {
           }
         }
       }, [axiosJWT, token, userId]);
+      
+      const minus = async (productId) => {
+        try {
+          const quantity = 1
+          const response = await axiosJWT.post(
+            'http://localhost:5000/cart/subtract',
+            { userId,productId,quantity },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const updatedCartItems = cartItems.map((item) =>
+            item.product.id === productId
+              ? { ...item, quantity: item.quantity - 1 } // Update quantity for matching product
+              : item
+          );
+          setCartItems(updatedCartItems); // Update state with modified cartItems
+          // Handle successful add to cart response (e.g., show success message)
+          console.log('Quantity minus', response.data);
+        } catch (error) {
+          console.error('Error when subtracting:', error);
+          // Handle add to cart error (e.g., show error message)
+        }
+      };
+
+      const add = async (productId) => {
+        try {
+          const quantity = 1
+          const response = await axiosJWT.post(
+            'http://localhost:5000/cart/plus',
+            { userId,productId,quantity },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const updatedCartItems = cartItems.map((item) =>
+            item.product.id === productId
+              ? { ...item, quantity: item.quantity + 1 } // Update quantity for matching product
+              : item
+          );
+          setCartItems(updatedCartItems); // Update state with modified cartItems
+          // Handle successful add to cart response (e.g., show success message)
+          console.log('Quantity plus', response.data);
+        } catch (error) {
+          console.error('Error when adding:', error);
+          // Handle add to cart error (e.g., show error message)
+        }
+      };
+
+      const trashcan = async (productId) => {
+        try {
+          const response = await axiosJWT.post(
+            'http://localhost:5000/cart/remove',
+            { userId,productId },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const updatedCartItems = cartItems.filter((item) => item.product.id !== productId);
+          setCartItems(updatedCartItems);
+          console.log('Item deleted', response.data);
+        } catch (error) {
+          console.error('Error when delete:', error);
+        }
+      };
 
     useEffect(() => { refreshToken(); getCartItems(); }, [refreshToken, getCartItems]);
 
@@ -118,7 +189,8 @@ const CartBody = () => {
                                 data-type="minus"
                                 data-field="quant[1]"
                             >
-                                <i className="ti-minus" />
+                                <i className="ti-minus"
+                                onClick={() => minus(cartItem.product.id)} />
                             </button>
                             </div>
                             <input
@@ -127,7 +199,8 @@ const CartBody = () => {
                             className="input-number"
                             data-min={1}
                             data-max={100}
-                            defaultValue={cartItem.quantity}
+                            value= {cartItem.quantity}
+                            readOnly
                             />
                             <div className="button plus">
                             <button
@@ -136,7 +209,8 @@ const CartBody = () => {
                                 data-type="plus"
                                 data-field="quant[1]"
                             >
-                                <i className="ti-plus" />
+                                <i className="ti-plus"
+                                onClick={() => add(cartItem.product.id)} />
                             </button>
                             </div>
                         </div>
@@ -146,8 +220,8 @@ const CartBody = () => {
                         <span>${(cartItem.quantity * cartItem.product.price).toFixed(2)}</span>
                         </td>
                         <td className="action" data-title="Remove">
-                        <a href="#">
-                            <i className="ti-trash remove-icon" />
+                        <a>
+                            <i className="ti-trash remove-icon" onClick={() => trashcan(cartItem.product.id)} />
                         </a>
                         </td>
                     </tr>
@@ -170,13 +244,13 @@ const CartBody = () => {
                         <div className="right">
                         <ul>
                             <li>
-                            Cart Subtotal<span>${total}</span>
+                            Cart Subtotal<span>${total.toFixed(2)}</span>
                             </li>
                             <li>
                             Shipping<span>Free</span>
                             </li>
                             <li className="last">
-                            You Pay<span>${total}</span>
+                            You Pay<span>${total.toFixed(2)}</span>
                             </li>
                         </ul>
                         <div className="button5">

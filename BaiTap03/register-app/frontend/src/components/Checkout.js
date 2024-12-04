@@ -54,7 +54,6 @@ const Checkout = () => {
         <Newsletter/>
         {/* Start Footer Area */}
         <Footer/>
-
         </>
     )
 }

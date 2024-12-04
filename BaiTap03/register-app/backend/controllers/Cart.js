@@ -111,7 +111,33 @@ export const subtractQuantity = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+// Function to subtract quantity of an item from the cart
+export const addQuantity = async (req, res) => {
+  try {
+    const { userId, productId, quantity } = req.body;
 
+    const cart = await Cart.findOne({ where: { userId } });
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    const cartItem = await CartItem.findOne({ where: { cartId: cart.id, productId } });
+    if (!cartItem) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    cartItem.quantity += quantity;
+    const product = await Product.findByPk(productId);
+    cart.total -= product.price * quantity;
+    await cartItem.save();
+
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
 // Function to remove all items from the cart
 export const removeAllFromCart = async (req, res) => {
   try {
@@ -130,6 +156,20 @@ export const removeAllFromCart = async (req, res) => {
     cart.total = 0;
     await cart.save();
 
+    res.json(cart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getCart = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const cart = await Cart.findOne({ where: { userId } });
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
     res.json(cart);
   } catch (error) {
     console.log(error);

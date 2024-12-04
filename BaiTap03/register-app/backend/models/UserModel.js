@@ -21,6 +21,21 @@ const Users = db.define('users',{
         type: DataTypes.STRING,
         allowNull: false
     },
+    phonenumber:{
+        type: DataTypes.INTEGER
+    },
+    address:{
+        type: DataTypes.STRING
+    },
+    postalCode:{
+        type: DataTypes.INTEGER
+    },
+    country:{
+        type: DataTypes.STRING
+    },
+    city:{
+        type: DataTypes.STRING
+    },
     refresh_token:{
         type: DataTypes.TEXT
     },

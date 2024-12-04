@@ -9,6 +9,7 @@ import Checkout from "./components/Checkout";
 import Contact from "./components/Contact";
 import Logout from "./components/Logout";
 import Product from "./components/Product";
+import Order from "./components/Order";
 function App() {
   return (
     <BrowserRouter>
@@ -48,6 +49,9 @@ function App() {
         </Route>
         <Route path="/product/:productId">
           <Product/>
+        </Route>
+        <Route path="/order">
+          <Order/>
         </Route>
       </Switch>
     </BrowserRouter>

@@ -230,3 +230,21 @@ export const Logout = async(req, res) => {
     res.clearCookie('refreshToken');
     return res.sendStatus(200);
 };
+export const getUserById = async (req, res) => {
+    const { userId } = req.body;
+  
+    try {
+      const user = await Users.findByPk(userId, {
+        attributes: ['id', 'name', 'email', 'phonenumber', 'address', 'postalcode', 'country', 'city']
+      });
+  
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
