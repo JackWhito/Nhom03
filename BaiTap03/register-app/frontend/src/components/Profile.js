@@ -10,18 +10,20 @@ const Profile = () => {
     const [expire, setExpire] = useState('');
     const [users, setUsers] = useState([]);
     const [items, setItems] = useState([]);
-
+    const [userId, setId] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItemPage, setCurrentItemPage] = useState(1);
     const usersPerPage = 5;
     const itemsPerPage = 4;
-
     const history = useHistory();
 
     useEffect(() => {
-        refreshToken();
-        getUsers();
+        const fetchData = async () =>{
+        await refreshToken();
         getItems();
+        getUsers();
+        };
+        fetchData();
     }, []);
 
     const refreshToken = async () => {
@@ -32,12 +34,14 @@ const Profile = () => {
             setName(decoded.name);
             setEmail(decoded.email); // Assuming the token contains the email
             setExpire(decoded.exp);
+            localStorage.setItem('userId', decoded.userId);
         } catch (error) {
             if (error.response) {
                 history.push("/");
             }
         }
     };
+    const userid = localStorage.getItem('userId');
 
     const axiosJWT = axios.create();
 
@@ -47,10 +51,6 @@ const Profile = () => {
             const response = await axios.get('http://localhost:5000/token');
             config.headers.Authorization = `Bearer ${response.data.accessToken}`;
             setToken(response.data.accessToken);
-            const decoded = jwtDecode(response.data.accessToken);
-            setName(decoded.name);
-            setEmail(decoded.email); // Assuming the token contains the email
-            setExpire(decoded.exp);
         }
         return config;
     }, (error) => {
@@ -58,7 +58,9 @@ const Profile = () => {
     });
 
     const getUsers = async () => {
-        const response = await axiosJWT.get('http://localhost:5000/users', {
+        const response = await axiosJWT.post('http://localhost:5000/cart/all', {
+            userId:userid
+        }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -66,10 +68,18 @@ const Profile = () => {
         setUsers(response.data);
     }
     const getItems = async () => {
-        const response = await axiosJWT.get('http://localhost:5000/items/search');
+        const response = await axiosJWT.post('http://localhost:5000/order/all', {
+            userId:userid
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         setItems(response.data);
     }
-
+    const total = users.reduce((acc, user) => {
+        return acc + user.quantity * user.product.price;
+    }, 0);
     // Get current users
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -111,27 +121,30 @@ const Profile = () => {
     };
     return (
         <div className="container">
-            <h1>Profile</h1>
-            <p><strong>Name:</strong> {name}</p>
-            <p><strong>Email:</strong> {email}</p>
-            <p><strong>Token:</strong> {token}</p>
-            
-            <h2>Users</h2>
+            <h1 style={{color:"black"}}>Profile</h1>
+            <p><strong style={{color:"black"}}>Name:</strong> {name}</p>
+            <p><strong style={{color:"black"}}>Email:</strong> {email}</p>
+            <br></br>
+            <h2 style={{color:"black"}}>Cart Items</h2>
             <div className="table-container">
                 <table className="table is-striped is-fullwidth">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentUsers.map((user, index) => (
                             <tr key={user.id}>
                                 <td>{indexOfFirstUser + index + 1}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
+                                <td>{user.product.name}</td>
+                                <td>{user.product.price}</td>
+                                <td>{user.quantity}</td>
+                                <td>{total}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -145,27 +158,27 @@ const Profile = () => {
                 goToPreviousPage={goToPreviousPage}
                 goToNextPage={goToNextPage}
             />
-
-            <h2>Items</h2>
+            <br></br>
+            <h2 style={{color:"black"}}>Orders</h2>
             <div className="table-container">
                 <table className="table is-striped is-fullwidth">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
+                            <th>Payment Method</th>
+                            <th>Payment Status</th>
+                            <th>Order Status</th>
+                            <th>Order Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentItems.map((item, index) => (
                             <tr key={item.id}>
                             <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.category}</td>
-                            <td>{item.price}</td>
-                            <td>{item.stock}</td>
+                            <td>{item.payment_method}</td>
+                            <td>{item.payment_status}</td>
+                            <td>{item.order_status}</td>
+                            <td>{item.order_date}</td>
                         </tr>
                         ))}
                     </tbody>
@@ -179,6 +192,7 @@ const Profile = () => {
                 goToPreviousPage={goToPreviousItemPage}
                 goToNextPage={goToNextItemPage}
             />
+            <br></br>
             <div style={{ padding: '10px', maxWidth: '100%', overflowX: 'auto' }}>
             <button
                 onClick={onLogout}
@@ -193,6 +207,18 @@ const Profile = () => {
                 }}
             >
                 Logout
+            </button>
+            <button
+                style={{
+                    padding: '10px 20px',
+                    backgroundColor: 'orange',
+                    color: 'white',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                }}
+            >
+                Edit Profile
             </button>
             </div>
         </div>

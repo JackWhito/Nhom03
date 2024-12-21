@@ -149,8 +149,8 @@ const Order = () => {
                     </div>
                     <div class="col-lg-12">
                     <div class="form-group">
-                        <label for="email">Email Address</label><br/>
-                        <input type="email" name="email" readOnly style={{width:300}} value={userInfo.address} />
+                        <label for="email">Address</label><br/>
+                        <input type="email" name="address" readOnly style={{width:300}} value={userInfo.address} />
                     </div>
                     </div>
                 </div>

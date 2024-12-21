@@ -112,7 +112,7 @@ const NavBar = () => {
                         </a>
                         {isDropdownOpen &&(
                         <div className="dropmenu show" aria-labelledby="userDropdown">
-                            <a className="dropdown-item" href="#">Profile</a> 
+                            <a className="dropdown-item">Profile</a> 
                             <a className="dropdown-item" href="#" onClick={handleLogout}>Logout</a>
                         </div>
                         )}

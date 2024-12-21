@@ -4,7 +4,7 @@ import { searchItems, filterItems, getTopSeller, getTopView, getItemsById, getIt
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import { addToCart, removeFromCart, subtractQuantity, viewCart, removeAllFromCart, addQuantity, getCart } from '../controllers/Cart.js';
-import { createOrder, getOrderDetailsByUserId, updateOrderStatus, updatePayment } from "../controllers/Order.js";
+import { createOrder, getAllOrdersByUserId, getOrderDetailsByUserId, updateOrderStatus, updatePayment } from "../controllers/Order.js";
 import { getAllComment, getCommentByUser } from "../controllers/Comment.js";
 import { getAllVoucher, searchVoucher } from "../controllers/Voucher.js";
 import { getPointByUserID } from "../controllers/BonusPoint.js";
@@ -44,6 +44,7 @@ router.post('/cart/view', getCart);
 router.post('/create-order',createOrder);
 router.put('/update-order/:orderId',updateOrderStatus);
 router.post('/order', getOrderDetailsByUserId);
+router.post('/order/all', getAllOrdersByUserId);
 router.put('/update-payment/:orderId',updatePayment);
 // Comment related
 router.get('/comments',getAllComment);

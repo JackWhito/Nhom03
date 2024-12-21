@@ -88,3 +88,18 @@ export const updatePayment = async (req, res) => {
         res.status(500).json({ error: 'Failed to update payment status' });
     }
 };
+export const getAllOrdersByUserId = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const orders = await Order.findAll({
+      where: { customer_id:userId },
+      attributes: ['id', 'payment_method', 'payment_status', 'order_status', 'order_date']
+    });
+
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to retrieve order details' });
+  }
+};

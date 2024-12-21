@@ -18,9 +18,6 @@ const Newsletter = () => {
                         first purchase
                     </p>
                     <form
-                        action="mail/mail.php"
-                        method="get"
-                        target="_blank"
                         className="newsletter-inner"
                     >
                         <input

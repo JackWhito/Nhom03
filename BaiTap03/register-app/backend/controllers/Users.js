@@ -111,18 +111,20 @@ export const getUsers = async(req, res) => {
  
 export const Register = async (req, res) => {
     const { name, email, password, confPassword } = req.body;
-    if (password !== confPassword) return res.status(400).json({ msg: "Password and Confirm Password do not match" });
+    if (password !== confPassword) 
+        return res.status(400).json({ msg: "Password and Confirm Password do not match" });
 
     try {
         // Check if email or username already exists
         const existingUser = await Users.findOne({ where: { [Op.or]: [{ email: email }, { name: name }] } });
-        if (existingUser) return res.status(400).json({ msg: "Email or Username already exists" });
+        if (existingUser) 
+            return res.status(400).json({ msg: "Email or Username already exists" });
 
         const salt = await bcrypt.genSalt();
         const hashPassword = await bcrypt.hash(password, salt);
 
         const otp = generateOTP();
-        const otpExpires = Date.now() + 5 * 60 * 1000;; // 5 min
+        const otpExpires = Date.now() + 5 * 60 * 1000; // 5 min
 
         // Save the user with OTP and expiration time
         await Users.create({
